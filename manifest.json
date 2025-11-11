@@ -1,10 +1,16 @@
 {
-  "name": "ZenFeed",
-  "description": "Test",
-  "version": "1.0",
-  "manifest_version": 3,
-  "action": {
-    "default_popup": "popup/popup.html",
-    "default_icon": "popup/images/hello_extensions.png"
-  }
+    "name": "ZenFeed",
+    "description": "ZenFeed helps you stay focused by hiding algorithmic short-form content like YouTube Shorts, Instagram Reels, and Facebook Reels.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "images/hello_extensions.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://www.youtube.com/*"],
+            "js": ["scripts/youtube.js"]
+        }
+    ]
 }
