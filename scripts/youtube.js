@@ -1,5 +1,3 @@
-import YT_CONFIG from "../config/youtube-selectors";
-
 let shortsEnabled = true;
 
 // loads initial state from storage
@@ -7,7 +5,7 @@ chrome.storage.sync.get(['shortsEnabled'], (result) => {
     shortsEnabled = result.shortsEnabled !== false;
 
     if (shortsEnabled) {
-    runHidingLogic();
+        runHidingLogic();
     }
 });
 
@@ -24,35 +22,58 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-function hideShortsSideTab() {
-    const sections = document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
+function hideShortsTabLargeView() {
+    // get the first ytd-guide-section-renderer (main navigation section)
+    const firstGuideSection = document.querySelector('ytd-guide-section-renderer');
     
-    sections.forEach(section => {
-        if (section.dataset.zenfeedHidden) return;
+    if (firstGuideSection) {
+        // get all ytd-guide-entry-renderer inside the first section
+        const guideEntries = firstGuideSection.querySelectorAll('ytd-guide-entry-renderer');
         
-        const headingText = section.textContent;
-        if (headingText && headingText.includes('Shorts')) {
-            section.style.display = 'none';
-            section.dataset.zenfeedHidden = 'true';
+        // the second one is Shorts
+        if (guideEntries.length >= 2) {
+            const shortsEntry = guideEntries[1]; 
+            
+            if (!shortsEntry.dataset.zenfeedHidden) {
+                shortsEntry.style.display = 'none';
+                shortsEntry.dataset.zenfeedHidden = 'true';
+            }
+        }
+    }
+}
+
+function hideShorts() {
+    const sections = document.querySelectorAll('a[href*="/shorts"]');
+        
+    sections.forEach(link => { 
+        if (link.dataset.zenfeedHidden) return;
+        
+        const guideEntry = link.closest('ytd-guide-entry-renderer');     
+        const miniGuideEntry = link.closest('ytd-mini-guide-entry-renderer');
+        const videoRenderer = link.closest('ytd-video-renderer');
+        const richItem = link.closest('ytd-rich-item-renderer');
+        
+        const parentContainer = guideEntry || miniGuideEntry || videoRenderer || richItem;
+        
+        if (parentContainer && !parentContainer.dataset.zenfeedHidden) {
+            parentContainer.style.display = 'none';
+            parentContainer.dataset.zenfeedHidden = 'true';
         }
     });
 }
 
-function hideShortsFeedTab() {
+function hideShortsFeedTab() { 
     const sections = document.querySelectorAll('ytd-rich-section-renderer');
     
     sections.forEach(section => {
         if (section.dataset.zenfeedHidden) return;
-        
-        const headingText = section.textContent;
-        if (headingText && headingText.includes('Shorts')) {
-            section.style.display = 'none';
-            section.dataset.zenfeedHidden = 'true';
-        }
+ 
+        section.style.display = 'none';
+        section.dataset.zenfeedHidden = 'true';
     });
 }
 
-function hideShortsInSearchFeed() {
+function hideShortsInSearchFeed() { 
     const shortsSearchFeed = document.querySelectorAll('grid-shelf-view-model');
     
     shortsSearchFeed.forEach(shelf => {
@@ -63,21 +84,7 @@ function hideShortsInSearchFeed() {
     });
 }
 
-function hideShortsAsVideos() {
-    const videoRenderers = document.querySelectorAll('ytd-video-renderer, ytd-grid-video-renderer, ytd-rich-item-renderer');
-    
-    videoRenderers.forEach(videoRenderer => {
-        if (videoRenderer.dataset.zenfeedHidden) return;
-        
-        const badgeText = videoRenderer.querySelector('.yt-badge-shape__text');
-        if (badgeText && badgeText.textContent.trim() === 'SHORTS') {
-            videoRenderer.style.display = 'none';
-            videoRenderer.dataset.zenfeedHidden = 'true';
-        }
-    });
-}
-
-function hideShortsPlayer() {
+function hideShortsPlayer() { 
     const shortsPlayer = document.querySelector('ytd-shorts');
     
     if (shortsPlayer && !shortsPlayer.dataset.zenfeedHidden) {
@@ -87,30 +94,30 @@ function hideShortsPlayer() {
 }
 
 function showAllShorts() {
-  const hiddenElements = document.querySelectorAll('[data-zenfeed-hidden="true"]');
-  
-  hiddenElements.forEach(element => {
+    const hiddenElements = document.querySelectorAll('[data-zenfeed-hidden="true"]');
+
+    hiddenElements.forEach(element => {
     element.style.display = '';
     delete element.dataset.zenfeedHidden;
-  });
+    });
 }
 
 function runHidingLogic() {
-  hideShortsSideTab();
-  hideShortsFeedTab();
-  hideShortsInSearchFeed();
-  hideShortsAsVideos();
-  hideShortsPlayer();
+    hideShortsTabLargeView();
+    hideShorts();
+    hideShortsFeedTab();
+    hideShortsInSearchFeed();
+    hideShortsPlayer();
 }
 
 const observer = new MutationObserver(() => {
-  if (shortsEnabled) {
-    runHidingLogic();
-  }
+    if (shortsEnabled) {
+        runHidingLogic();
+    }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
 if (shortsEnabled) {
-  runHidingLogic();
+    runHidingLogic();
 }
