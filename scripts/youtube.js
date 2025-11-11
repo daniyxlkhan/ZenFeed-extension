@@ -34,12 +34,21 @@ function hideShortsFeedTab() {
     });
 }
 
+function hideShortsInSearchFeed() {
+    const shortsSearchFeed = document.querySelectorAll('grid-shelf-view-model');
+    shortsSearchFeed.forEach(shortSearchFeed => {
+        shortSearchFeed.style.display = 'none';
+    });
+}
+
 const observer = new MutationObserver(() => {
     hideShortsSideTab();
-
+    hideShortsFeedTab();
+    hideShortsInSearchFeed();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
 hideShortsSideTab();
 hideShortsFeedTab();
+hideShortsInSearchFeed();
