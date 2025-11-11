@@ -1,3 +1,27 @@
+let shortsEnabled = true;
+
+// loads initial state from storage
+chrome.storage.sync.get(['shortsEnabled'], (result) => {
+    shortsEnabled = result.shortsEnabled !== false;
+
+    if (shortsEnabled) {
+    runHidingLogic();
+    }
+});
+
+// listens for toggle messages from popup
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.action === 'toggleShorts') {
+    shortsEnabled = message.enabled;
+
+    if (shortsEnabled) {
+        runHidingLogic();
+    } else {
+        showAllShorts();
+    }
+    }
+});
+
 function hideShortsSideTab() {
     const sections = document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
     
@@ -60,18 +84,31 @@ function hideShortsPlayer() {
     }
 }
 
+function showAllShorts() {
+  const hiddenElements = document.querySelectorAll('[data-zenfeed-hidden="true"]');
+  
+  hiddenElements.forEach(element => {
+    element.style.display = '';
+    delete element.dataset.zenfeedHidden;
+  });
+}
+
+function runHidingLogic() {
+  hideShortsSideTab();
+  hideShortsFeedTab();
+  hideShortsInSearchFeed();
+  hideShortsAsVideos();
+  hideShortsPlayer();
+}
+
 const observer = new MutationObserver(() => {
-    hideShortsSideTab();
-    hideShortsFeedTab();
-    hideShortsInSearchFeed();
-    hideShortsAsVideos();
-    hideShortsPlayer();
+  if (shortsEnabled) {
+    runHidingLogic();
+  }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-hideShortsSideTab();
-hideShortsFeedTab();
-hideShortsInSearchFeed();
-hideShortsAsVideos();
-hideShortsPlayer();
+if (shortsEnabled) {
+  runHidingLogic();
+}

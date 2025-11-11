@@ -3,6 +3,7 @@
     "description": "Helps you stay focused by hiding short-form content like YouTube Shorts, Instagram Reels, and Facebook Reels.",
     "version": "1.0",
     "manifest_version": 3,
+    "permissions": ["storage", "activeTab"],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -19,8 +20,9 @@
     },
     "content_scripts": [
         {
-            "matches": ["*://www.youtube.com/*"],
-            "js": ["scripts/youtube.js"]
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["scripts/youtube.js"],
+            "run_at": "document_end"
         }
     ]
 }
