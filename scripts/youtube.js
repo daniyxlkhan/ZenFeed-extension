@@ -57,11 +57,20 @@ function hideShortsAsVideos() {
     });
 }
 
+function hideShortsPlayer() {
+    const shortsPlayer = document.querySelector('ytd-shorts');
+        if (shortsPlayer && !shortsPlayer.hidden) {
+        shortsPlayer.style.display = 'none';
+        shortsPlayer.hidden = true;
+    }
+}
+
 const observer = new MutationObserver(() => {
     hideShortsSideTab();
     hideShortsFeedTab();
     hideShortsInSearchFeed();
     hideShortsAsVideos();
+        hideShortsPlayer();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
@@ -70,3 +79,4 @@ hideShortsSideTab();
 hideShortsFeedTab();
 hideShortsInSearchFeed();
 hideShortsAsVideos();
+hideShortsPlayer();
