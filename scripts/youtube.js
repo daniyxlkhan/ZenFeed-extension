@@ -1,3 +1,5 @@
+import YT_CONFIG from "../config/youtube-selectors";
+
 let shortsEnabled = true;
 
 // loads initial state from storage
