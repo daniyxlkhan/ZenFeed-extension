@@ -65,7 +65,7 @@ const observer = new MutationObserver(() => {
     hideShortsFeedTab();
     hideShortsInSearchFeed();
     hideShortsAsVideos();
-        hideShortsPlayer();
+    hideShortsPlayer();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
