@@ -1,43 +1,38 @@
 const YT_CONFIG = {
     version: "2025.11.11",
     
-    // simple selector-only configs (no custom logic needed)
-    shorts_search: [
-        'ytd-reel-shelf-renderer',
-        'grid-shelf-view-model',
-        '[data-shorts-shelf]'
+    // Simple selector-based hiding 
+    shorts_in_home_feed: [
+        'ytd-rich-section-renderer'
     ],
+    
+    shorts_in_search_feed: [
+        'grid-shelf-view-model'
+    ],
+    
     shorts_player: [
-        'ytd-shorts',
-        '[data-shorts-player]',
-        'ytd-watch-flexy:has([data-shorts])'
+        'ytd-shorts'
     ],
     
-    // configs that need custom logic
-    sidebar: {
-        selectors: [
-            'ytd-guide-entry-renderer', 
-            'ytd-mini-guide-entry-renderer'
-        ],
-        textMatch: 'Shorts'  
+    // Link-based detection
+    shorts_links: {
+        selector: 'a[href*="/shorts"]',
+        containers: [
+            'ytd-mini-guide-entry-renderer',
+            'ytd-video-renderer',
+            'ytd-rich-item-renderer',
+            'ytd-grid-video-renderer'
+        ]
     },
     
-    feed: {
-        selectors: [
-            'ytd-rich-section-renderer'
-        ],
-        textMatch: 'Shorts' 
+    // Position-based detection (for large view sidebar)
+    shorts_large_view: {
+        parentSelector: 'ytd-guide-section-renderer',
+        childSelector: 'ytd-guide-entry-renderer',
+        targetIndex: 1  // Second entry is shorts
     },
-    
-    videos: {
-        selectors: [
-            'ytd-video-renderer', 
-            'ytd-grid-video-renderer', 
-            'ytd-rich-item-renderer'
-        ],
-        badgeSelector: '.yt-badge-shape__text', 
-        badgeText: 'SHORTS'
-    }
 };
 
-module.exports = YT_CONFIG;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = YT_CONFIG;
+}

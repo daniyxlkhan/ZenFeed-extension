@@ -1,4 +1,5 @@
 let shortsEnabled = true;
+let CONFIG = YT_CONFIG;
 
 // loads initial state from storage
 chrome.storage.sync.get(['shortsEnabled'], (result) => {
@@ -14,7 +15,7 @@ chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'toggleShorts') {
     shortsEnabled = message.enabled;
 
-    if (shortsEnabled) {
+    if (shortsEnabled  && CONFIG) {
         runHidingLogic();
     } else {
         showAllShorts();
@@ -22,17 +23,18 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
+// Position based hiding
 function hideShortsTabLargeView() {
-    // get the first ytd-guide-section-renderer (main navigation section)
-    const firstGuideSection = document.querySelector('ytd-guide-section-renderer');
+    const config = CONFIG.shorts_large_view;
+    const firstGuideSection = document.querySelector(config.parentSelector);
     
     if (firstGuideSection) {
-        // get all ytd-guide-entry-renderer inside the first section
-        const guideEntries = firstGuideSection.querySelectorAll('ytd-guide-entry-renderer');
+        // get all children inside the parent section
+        const guideEntries = firstGuideSection.querySelectorAll(config.childSelector);
         
-        // the second one is Shorts
-        if (guideEntries.length >= 2) {
-            const shortsEntry = guideEntries[1]; 
+        if (guideEntries.length > config.targetIndex) {
+            // the second one is shorts
+            const shortsEntry = guideEntries[config.targetIndex];
             
             if (!shortsEntry.dataset.zenfeedHidden) {
                 shortsEntry.style.display = 'none';
@@ -42,18 +44,21 @@ function hideShortsTabLargeView() {
     }
 }
 
+// Link based hiding
 function hideShorts() {
-    const sections = document.querySelectorAll('a[href*="/shorts"]');
-        
-    sections.forEach(link => { 
-        if (link.dataset.zenfeedHidden) return;
-        
-        const guideEntry = link.closest('ytd-guide-entry-renderer');     
-        const miniGuideEntry = link.closest('ytd-mini-guide-entry-renderer');
-        const videoRenderer = link.closest('ytd-video-renderer');
-        const richItem = link.closest('ytd-rich-item-renderer');
-        
-        const parentContainer = guideEntry || miniGuideEntry || videoRenderer || richItem;
+    const config = CONFIG.shorts_links;
+    const sections = document.querySelectorAll(config.selector);
+    
+    sections.forEach(link => {         
+        if (link.dataset.zenfeedProcessed) return;
+        link.dataset.zenfeedProcessed = 'true';
+
+        // try each container type from config
+        let parentContainer = null;
+        for (const containerSelector of config.containers) {
+            parentContainer = link.closest(containerSelector);
+            if (parentContainer) break;
+        }
         
         if (parentContainer && !parentContainer.dataset.zenfeedHidden) {
             parentContainer.style.display = 'none';
@@ -62,35 +67,37 @@ function hideShorts() {
     });
 }
 
-function hideShortsFeedTab() { 
-    const sections = document.querySelectorAll('ytd-rich-section-renderer');
-    
-    sections.forEach(section => {
-        if (section.dataset.zenfeedHidden) return;
- 
-        section.style.display = 'none';
-        section.dataset.zenfeedHidden = 'true';
-    });
+// Selector based hiding
+function hideShortsInHomeFeed() {
+    hideBySelectors(CONFIG.shorts_in_home_feed);
 }
 
-function hideShortsInSearchFeed() { 
-    const shortsSearchFeed = document.querySelectorAll('grid-shelf-view-model');
-    
-    shortsSearchFeed.forEach(shelf => {
-        if (shelf.dataset.zenfeedHidden) return;
-        
-        shelf.style.display = 'none';
-        shelf.dataset.zenfeedHidden = 'true';
-    });
+function hideShortsInSearchFeed() {
+    hideBySelectors(CONFIG.shorts_in_search_feed);
 }
 
-function hideShortsPlayer() { 
-    const shortsPlayer = document.querySelector('ytd-shorts');
+function hideShortsPlayer() {
+    hideBySelectors(CONFIG.shorts_player);
+}
+
+// Helper: Generic selector-based hiding
+function hideBySelectors(selectors) {
+    if (!selectors || selectors.length === 0) return;
     
-    if (shortsPlayer && !shortsPlayer.dataset.zenfeedHidden) {
-        shortsPlayer.style.display = 'none';
-        shortsPlayer.dataset.zenfeedHidden = 'true';
-    }
+    selectors.forEach(selector => {
+        try {
+            const elements = document.querySelectorAll(selector);
+            
+            elements.forEach(element => {
+                if (!element.dataset.zenfeedHidden) {
+                    element.style.display = 'none';
+                    element.dataset.zenfeedHidden = 'true';
+                }
+            });
+        } catch (error) {
+            // console.warn(`Selector failed: ${selector}`, error);
+        }
+    });
 }
 
 function showAllShorts() {
@@ -105,19 +112,26 @@ function showAllShorts() {
 function runHidingLogic() {
     hideShortsTabLargeView();
     hideShorts();
-    hideShortsFeedTab();
+    hideShortsInHomeFeed();
     hideShortsInSearchFeed();
     hideShortsPlayer();
 }
 
-const observer = new MutationObserver(() => {
-    if (shortsEnabled) {
+const observer = new MutationObserver((mutations) => {
+    if (!shortsEnabled || !CONFIG) return;
+    
+    // only run if actual elements were added 
+    const hasAddedNodes = mutations.some(mutation => 
+        mutation.addedNodes.length > 0
+    );
+    
+    if (hasAddedNodes) {
         runHidingLogic();
     }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-if (shortsEnabled) {
+if (shortsEnabled && CONFIG) {
     runHidingLogic();
 }
