@@ -41,10 +41,27 @@ function hideShortsInSearchFeed() {
     });
 }
 
+function hideShortsAsVideos() {
+    const videoRenderers = document.querySelectorAll("ytd-video-renderer");
+    videoRenderers.forEach(videoRenderer => {
+        const badgeText = videoRenderer.querySelector('.yt-badge-shape__text');
+        
+        if (badgeText && !videoRenderer.hidden) {
+            const text = badgeText.textContent.trim();            
+            if (text === "SHORTS") {
+                console.log('Hiding Shorts as video:', videoRenderer);
+                videoRenderer.style.display = 'none';
+                videoRenderer.hidden = true;
+            }
+        }
+    });
+}
+
 const observer = new MutationObserver(() => {
     hideShortsSideTab();
     hideShortsFeedTab();
     hideShortsInSearchFeed();
+    hideShortsAsVideos();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
@@ -52,3 +69,4 @@ observer.observe(document.body, { childList: true, subtree: true });
 hideShortsSideTab();
 hideShortsFeedTab();
 hideShortsInSearchFeed();
+hideShortsAsVideos();
