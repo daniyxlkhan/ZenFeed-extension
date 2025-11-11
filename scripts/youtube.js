@@ -22,6 +22,18 @@ function hideShortsSideTab() {
     })
 }
 
+function hideShortsFeedTab() {
+    const sections = document.querySelectorAll('ytd-rich-section-renderer');
+    sections.forEach(section => {
+        const headingText = section.textContent;
+        if (headingText.includes('Shorts') && !section.hidden) {
+            console.log('Found Shorts section by text:', section);
+            section.style.display = 'none';
+            section.hidden = true;
+        }
+    });
+}
+
 const observer = new MutationObserver(() => {
     hideShortsSideTab();
 
@@ -30,3 +42,4 @@ const observer = new MutationObserver(() => {
 observer.observe(document.body, { childList: true, subtree: true });
 
 hideShortsSideTab();
+hideShortsFeedTab();
