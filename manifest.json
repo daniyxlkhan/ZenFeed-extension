@@ -1,0 +1,10 @@
+{
+  "name": "ZenFeed",
+  "description": "Test",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "popup/images/hello_extensions.png"
+  }
+}
