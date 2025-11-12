@@ -3,7 +3,7 @@ let CONFIG = YT_CONFIG;
 
 // loads initial state from storage
 chrome.storage.sync.get(['shortsEnabled'], (result) => {
-    shortsEnabled = result.shortsEnabled !== false;
+    shortsEnabled = result.shortsEnabled !== false;  // default to true
 
     if (shortsEnabled) {
         runHidingLogic();
@@ -13,13 +13,13 @@ chrome.storage.sync.get(['shortsEnabled'], (result) => {
 // listens for toggle messages from popup
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'toggleShorts') {
-    shortsEnabled = message.enabled;
+        shortsEnabled = message.enabled;
 
-    if (shortsEnabled  && CONFIG) {
-        runHidingLogic();
-    } else {
-        showAllShorts();
-    }
+        if (shortsEnabled  && CONFIG) {
+            runHidingLogic();
+        } else {
+            showAllShorts();
+        }
     }
 });
 

@@ -23,6 +23,11 @@
             "matches": ["*://*.youtube.com/*"],
             "js": ["config/youtube-selectors.js", "scripts/youtube.js"],
             "run_at": "document_end"
+        },
+        {
+            "matches": ["*://*.instagram.com/*"],
+            "js": ["config/instagram-selectors.js", "scripts/instagram.js"],
+            "run_at": "document_end"
         }
     ]
 }
