@@ -32,7 +32,3 @@ const YT_CONFIG = {
         targetIndex: 1  // Second entry is shorts
     },
 };
-
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = YT_CONFIG;
-}

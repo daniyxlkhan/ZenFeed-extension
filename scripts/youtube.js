@@ -50,8 +50,8 @@ function hideShorts() {
     const sections = document.querySelectorAll(config.selector);
     
     sections.forEach(link => {         
-        if (link.dataset.zenfeedProcessed) return;
-        link.dataset.zenfeedProcessed = 'true';
+        if (link.dataset.zenfeedHidden) return;
+        link.dataset.zenfeedHidden = 'true';
 
         // try each container type from config
         let parentContainer = null;
@@ -104,8 +104,8 @@ function showAllShorts() {
     const hiddenElements = document.querySelectorAll('[data-zenfeed-hidden="true"]');
 
     hiddenElements.forEach(element => {
-    element.style.display = '';
-    delete element.dataset.zenfeedHidden;
+        element.style.display = '';
+        delete element.dataset.zenfeedHidden;
     });
 }
 
