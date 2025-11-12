@@ -19,9 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs[0]?.url?.includes('youtube.com')) {
                 chrome.tabs.sendMessage(tabs[0].id, { 
-                action: 'toggleShorts', 
-                enabled: enabled 
-                })
+                    action: 'toggleShorts', 
+                    enabled: enabled 
+                }).catch(() => {
+                    // silently ignore if content script not ready
+                    // storage sync will handle it anyway
+                });
             }
         });
     });
@@ -45,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 chrome.tabs.sendMessage(tabs[0].id, { 
                     action: 'toggleReels', 
                     enabled: enabled 
+                }).catch(() => {
+                    // silently ignore if content script not ready
+                    // storage sync will handle it anyway
                 });
             }
         });

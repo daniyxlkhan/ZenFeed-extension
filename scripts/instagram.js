@@ -23,6 +23,35 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
+// listen for storage changes (when settings change in other tabs)
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'sync' && changes.reelsEnabled) {
+        reelsEnabled = changes.reelsEnabled.newValue;
+        
+        if (reelsEnabled && CONFIG) {
+            runHidingLogic();
+        } else {
+            showAllReels();
+        }
+    }
+});
+
+// extra safety on top of onChanged to listen for tab visibility changes (when switching tabs)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        // tab became visible, check current state
+        chrome.storage.sync.get(['reelsEnabled'], (result) => {
+            reelsEnabled = result.reelsEnabled !== false;
+            
+            if (reelsEnabled && CONFIG) {
+                runHidingLogic();
+            } else {
+                showAllReels();
+            }
+        });
+    }
+});
+
 // Hide reels side tab
 function hideReelsTab() {
     const config = CONFIG.reels_links;

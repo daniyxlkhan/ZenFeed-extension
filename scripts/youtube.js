@@ -23,6 +23,35 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
+// listen for storage changes (when settings change in other tabs)
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'sync' && changes.shortsEnabled) {
+        shortsEnabled = changes.shortsEnabled.newValue;
+        
+        if (shortsEnabled && CONFIG) {
+            runHidingLogic();
+        } else {
+            showAllShorts();
+        }
+    }
+});
+
+// extra safety on top of onChanged to listen for tab visibility changes (when switching tabs)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        // tab became visible, check current state
+        chrome.storage.sync.get(['shortsEnabled'], (result) => {
+            shortsEnabled = result.shortsEnabled !== false;
+            
+            if (shortsEnabled && CONFIG) {
+                runHidingLogic();
+            } else {
+                showAllShorts();
+            }
+        });
+    }
+});
+
 // Position based hiding
 function hideShortsTabLargeView() {
     const config = CONFIG.shorts_large_view;
