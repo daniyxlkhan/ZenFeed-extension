@@ -23,7 +23,8 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-function hideReels() {
+// Hide reels side tab
+function hideReelsTab() {
     const config = CONFIG.reels_links;
     const sections = document.querySelectorAll(config.selector);
 
@@ -44,6 +45,19 @@ function hideReels() {
     });
 }
 
+// Hide Infinte Reels Player
+function hideInfiniteReelsPlayer() {
+    if (!window.location.pathname.startsWith('/reels/')) return;
+    
+    // target the main content area 
+    const mainContent = document.querySelector('main[role="main"]');
+    
+    if (mainContent && !mainContent.dataset.zenfeedHidden) {
+        mainContent.style.display = 'none';
+        mainContent.dataset.zenfeedHidden = 'true';
+    }
+}
+
 function showAllReels() {
     const hiddenElements = document.querySelectorAll('[data-zenfeed-hidden="true"]');
 
@@ -54,7 +68,8 @@ function showAllReels() {
 }
 
 function runHidingLogic() {
-    hideReels();
+    hideReelsTab();
+    hideInfiniteReelsPlayer();
 }
 
 const observer = new MutationObserver((mutations) => {
