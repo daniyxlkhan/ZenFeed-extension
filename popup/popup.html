@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ZenFeed Options</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">
+        <img src="images/icon32.png" alt="ZenFeed">
+        <span>ZenFeed</span>
+      </div>
+    </div>
+
+    <div class="toggle-list">
+      <label class="toggle-item">
+        <span>Hide 'Reels' page</span>
+        <input type="checkbox" id="blockReels" checked>
+        <span class="toggle-switch"></span>
+      </label>
+      <label class="toggle-item">
+        <span>Hide 'Explore' page</span>
+        <input type="checkbox" id="blockExplore" checked>
+        <span class="toggle-switch"></span>
+      </label>
+      <label class="toggle-item">
+        <span>Hide 'Stories' section</span>
+        <input type="checkbox" id="blockStories">
+        <span class="toggle-switch"></span>
+      </label>
+      <label class="toggle-item">
+        <span>Hide 'Posts' section</span>
+        <input type="checkbox" id="blockPosts">
+        <span class="toggle-switch"></span>
+      </label>
+      <label class="toggle-item">
+        <span>Hide 'Suggested Followers' section</span>
+        <input type="checkbox" id="blockSuggestedFollowers" checked>
+        <span class="toggle-switch"></span>
+      </label>
+      <label class="toggle-item">
+        <span>Redirect 'For you' feed to "Following"</span>
+        <input type="checkbox" id="blockForYouFeed" checked>
+        <span class="toggle-switch"></span>
+      </label>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
