@@ -13,15 +13,25 @@
       </div>
     </div>
 
-    <div class="toggle-list">
+    <div class="platform-selector">
+      <label for="platform">Platform:</label>
+      <select id="platform">
+        <option value="instagram">Instagram</option>
+        <option value="youtube">YouTube</option>
+        <option value="facebook">Facebook</option>
+      </select>
+    </div>
+
+    <!-- Instagram Options -->
+    <div class="toggle-list" data-platform="instagram">
       <label class="toggle-item">
         <span>Hide 'Reels' page</span>
-        <input type="checkbox" id="blockReels" checked>
+        <input type="checkbox" id="blockReels">
         <span class="toggle-switch"></span>
       </label>
       <label class="toggle-item">
         <span>Hide 'Explore' page</span>
-        <input type="checkbox" id="blockExplore" checked>
+        <input type="checkbox" id="blockExplore">
         <span class="toggle-switch"></span>
       </label>
       <label class="toggle-item">
@@ -36,12 +46,30 @@
       </label>
       <label class="toggle-item">
         <span>Hide 'Suggested Followers' section</span>
-        <input type="checkbox" id="blockSuggestedFollowers" checked>
+        <input type="checkbox" id="blockSuggestedFollowers">
         <span class="toggle-switch"></span>
       </label>
       <label class="toggle-item">
         <span>Redirect 'For you' feed to "Following"</span>
-        <input type="checkbox" id="blockForYouFeed" checked>
+        <input type="checkbox" id="blockForYouFeed">
+        <span class="toggle-switch"></span>
+      </label>
+    </div>
+
+    <!-- YouTube Options -->
+    <div class="toggle-list" data-platform="youtube" style="display: none;">
+      <label class="toggle-item">
+        <span>Hide 'Shorts' page</span>
+        <input type="checkbox" id="yt_blockShorts">
+        <span class="toggle-switch"></span>
+      </label>
+    </div>
+
+        <!-- Facebook Options -->
+    <div class="toggle-list" data-platform="facebook" style="display: none;">
+      <label class="toggle-item">
+        <span>Hide 'Reels' page</span>
+        <input type="checkbox" id="fb_blockReels">
         <span class="toggle-switch"></span>
       </label>
     </div>

@@ -92,3 +92,46 @@ body {
 .toggle-item input[type="checkbox"]:checked + .toggle-switch::before {
   transform: translateX(20px);
 }
+
+.platform-selector {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.platform-selector label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #e4e4e4;
+}
+
+.platform-selector select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.platform-selector select:hover {
+  border-color: #999;
+}
+
+.platform-selector select:focus {
+  border-color: #0095f6;
+  box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1);
+}
+
+.toggle-list {
+  display: block;
+}
+
+.toggle-list[style*="display: none"] {
+  display: none !important;
+}
