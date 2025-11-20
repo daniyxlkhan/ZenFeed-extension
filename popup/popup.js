@@ -1,5 +1,5 @@
 import { defaultSettings as instagramSettings, labelsArray as instagramLabels } from "../modules/instagram-lib.js";
-// import { defaultSettings as youtubeSettings, labelsArray as youtubeLabels } from "../modules/youtube-lib.js";
+import { defaultSettings as youtubeSettings, labelsArray as youtubeLabels } from "../modules/youtube-lib.js";
 // import { defaultSettings as facebookSettings, labelsArray as facebookLabels } from "../modules/facebook-lib.js";
 
 // Platform configuration - easy to add more platforms
@@ -8,10 +8,10 @@ const platforms = {
         defaultSettings: instagramSettings,
         labelsArray: instagramLabels
     },
-    // youtube: {
-    //     defaultSettings: youtubeSettings,
-    //     labelsArray: youtubeLabels
-    // },
+    youtube: {
+        defaultSettings: youtubeSettings,
+        labelsArray: youtubeLabels
+    },
     // facebook: {
     //     defaultSettings: facebookSettings,
     //     labelsArray: facebookLabels
