@@ -38,6 +38,14 @@ function applySettings() {
         show(shortsTabContainer);
     }
 
+    if (settings.hideHomeFeed) {
+        const homePage = body?.querySelector(selectors.homePage);
+        hide(homePage);
+    } else {
+        const homePage = body?.querySelector(`${selectors.homePage}[data-zenfeed-hidden="true"]`);
+        show(homePage);
+    }
+
     const hideShortsSection = path.includes(urls.shorts) && settings.hideShorts;
     if (hideShortsSection) {
         const main = body?.querySelector(selectors.shortsPlayer);

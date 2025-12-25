@@ -14,6 +14,7 @@ export const urls = {
 
 export const selectors = {
     main: "[role=main]",
+    homePage: "ytd-browse",
     subscriptions: "a[href*='/feed/subscriptions/']",
     shorts: "a[href*='/shorts']",
     shortsPlayer: "ytd-shorts",
