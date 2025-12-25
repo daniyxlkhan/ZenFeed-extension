@@ -46,6 +46,27 @@ function applySettings() {
         show(homePage);
     }
 
+    if (settings.hideSubscriptions) {
+        const subscriptions = body?.querySelectorAll(selectors.subscriptions);
+        const sideBarSubscriptionList = body?.querySelectorAll(selectors.subscriptionContainers.sideBarSubscriptionList);
+        hide(subscriptions);
+        hide(sideBarSubscriptionList);
+    } else {
+        const subscriptions = body?.querySelectorAll(`${selectors.subscriptions}[data-zenfeed-hidden="true"]`);
+        const sideBarSubscriptionList = body?.querySelectorAll(`${selectors.subscriptionContainers.sideBarSubscriptionList}[data-zenfeed-hidden="true"]`);
+        show(subscriptions);
+        show(sideBarSubscriptionList);
+    }
+
+    const hideSubscriptions = path.includes(urls.subscriptions) && settings.hideSubscriptions;
+    if (hideSubscriptions) {
+        const main = body?.querySelector(selectors.subscriptionContainers.subscriptionsPage);
+        hide(main);
+    } else {
+        const main = body?.querySelector(`${selectors.subscriptionContainers.subscriptionsPage}[data-zenfeed-hidden="true"]`);
+        show(main);
+    }
+
     const hideShortsSection = path.includes(urls.shorts) && settings.hideShorts;
     if (hideShortsSection) {
         const main = body?.querySelector(selectors.shortsPlayer);

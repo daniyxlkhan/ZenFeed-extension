@@ -10,12 +10,17 @@ export const labelsArray = Object.keys(defaultSettings);
 export const urls = {
     base: "/",
     shorts: "/shorts",
+    subscriptions: "/feed/subscriptions"
 };
 
 export const selectors = {
     main: "[role=main]",
     homePage: "ytd-browse",
-    subscriptions: "a[href*='/feed/subscriptions/']",
+    subscriptions: "a[href*='/feed/subscriptions']",
+    subscriptionContainers: {
+        subscriptionsPage: "ytd-two-column-browse-results-renderer",
+        sideBarSubscriptionList: 'ytd-guide-renderer ytd-guide-section-renderer:nth-of-type(2)',
+    },
     shorts: "a[href*='/shorts']",
     shortsPlayer: "ytd-shorts",
     shortsContainers: {
