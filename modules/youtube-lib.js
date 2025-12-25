@@ -20,6 +20,7 @@ export const selectors = {
     shortsContainers: {
         homeFeed: 'ytd-rich-section-renderer',
         searchFeed: 'grid-shelf-view-model',
+        longShortsTab: 'ytd-guide-section-renderer ytd-guide-entry-renderer:nth-of-type(2)',
     }
 };
 

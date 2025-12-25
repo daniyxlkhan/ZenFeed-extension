@@ -22,16 +22,20 @@ function applySettings() {
         const shortLinks = body?.querySelectorAll(selectors.shorts);
         const shortsHomeFeedContainer = body?.querySelectorAll(selectors.shortsContainers.homeFeed);
         const shortsSearchFeedContainer = body?.querySelectorAll(selectors.shortsContainers.searchFeed);
+        const shortsTabContainer = body?.querySelectorAll(selectors.shortsContainers.longShortsTab);
         hide(shortLinks);
         hide(shortsHomeFeedContainer);
         hide(shortsSearchFeedContainer);
+        hide(shortsTabContainer);
     } else {
         const shortLinks = body?.querySelectorAll(`${selectors.shorts}[data-zenfeed-hidden="true"]`);
         const shortsHomeFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.homeFeed}[data-zenfeed-hidden="true"]`);
         const shortsSearchFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.searchFeed}[data-zenfeed-hidden="true"]`);
+        const shortsTabContainer = body?.querySelectorAll(`${selectors.shortsContainers.longShortsTab}[data-zenfeed-hidden="true"]`);
         show(shortLinks);
         show(shortsHomeFeedContainer);
         show(shortsSearchFeedContainer);
+        show(shortsTabContainer);
     }
 
     const hideShortsSection = path.includes(urls.shorts) && settings.hideShorts;
