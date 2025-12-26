@@ -1,7 +1,6 @@
 export const defaultSettings = {
     hideShorts: true,
     hideHomeFeed: false,
-    redirectToSubscriptions: false,
     hideSubscriptions: false,
 };
 
@@ -10,15 +9,15 @@ export const labelsArray = Object.keys(defaultSettings);
 export const urls = {
     base: "/",
     shorts: "/shorts",
-    subscriptions: "/feed/subscriptions"
+    subscriptions: "/feed/subscriptions",
 };
 
 export const selectors = {
     main: "[role=main]",
-    homePage: "ytd-browse",
+    homePage: "ytd-browse[page-subtype='home']",
     subscriptions: "a[href*='/feed/subscriptions']",
     subscriptionContainers: {
-        subscriptionsPage: "ytd-two-column-browse-results-renderer",
+        subscriptionsPage: "ytd-browse[page-subtype='subscriptions']",
         sideBarSubscriptionList: 'ytd-guide-renderer ytd-guide-section-renderer:nth-of-type(2)',
     },
     shorts: "a[href*='/shorts']",

@@ -38,14 +38,6 @@ function applySettings() {
         show(shortsTabContainer);
     }
 
-    if (settings.hideHomeFeed) {
-        const homePage = body?.querySelector(selectors.homePage);
-        hide(homePage);
-    } else {
-        const homePage = body?.querySelector(`${selectors.homePage}[data-zenfeed-hidden="true"]`);
-        show(homePage);
-    }
-
     if (settings.hideSubscriptions) {
         const subscriptions = body?.querySelectorAll(selectors.subscriptions);
         const sideBarSubscriptionList = body?.querySelectorAll(selectors.subscriptionContainers.sideBarSubscriptionList);
@@ -60,11 +52,20 @@ function applySettings() {
 
     const hideSubscriptions = path.includes(urls.subscriptions) && settings.hideSubscriptions;
     if (hideSubscriptions) {
-        const main = body?.querySelector(selectors.subscriptionContainers.subscriptionsPage);
-        hide(main);
+        const subscriptionsPage = body?.querySelector(selectors.subscriptionContainers.subscriptionsPage);
+        hide(subscriptionsPage);
     } else {
-        const main = body?.querySelector(`${selectors.subscriptionContainers.subscriptionsPage}[data-zenfeed-hidden="true"]`);
-        show(main);
+        const subscriptionsPage = body?.querySelector(`${selectors.subscriptionContainers.subscriptionsPage}[data-zenfeed-hidden="true"]`);
+        show(subscriptionsPage);
+    }
+
+    const hideHomeFeed = path.includes(urls.base) && settings.hideHomeFeed;
+    if (hideHomeFeed) {
+        const homePage = body?.querySelector(selectors.homePage);
+        hide(homePage);
+    } else {
+        const homePage = body?.querySelector(`${selectors.homePage}[data-zenfeed-hidden="true"]`);
+        show(homePage);
     }
 
     const hideShortsSection = path.includes(urls.shorts) && settings.hideShorts;
