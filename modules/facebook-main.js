@@ -18,10 +18,10 @@ function applySettings() {
     const path = window.location.pathname;
     const body = document.body;
 
-    if (settings.hideReels) {
+    if (settings.fb_blockReels) {
         const reelLinks = body?.querySelectorAll(selectors.reels);
         reelLinks?.forEach(link => {
-            // Walk up levels to get the container
+            // Walk up 3 levels to get the container
             let container = link;
             for (let i = 0; i < 3 && container.parentElement; i++) {
                 container = container.parentElement;
@@ -33,13 +33,46 @@ function applySettings() {
         show(hiddenReels);
     }
 
-    const hideReelsSection = path.includes(urls.reels) && settings.hideReels;
-    if (hideReelsSection) {
+    const blockReelsSection = path.includes(urls.reels) && settings.fb_blockReels;
+    if (blockReelsSection) {
         const reelsPage = body?.querySelectorAll(selectors.main);
         hide(reelsPage);
     } else if (path.includes(urls.reels)) {
         const reelsPage = document.querySelectorAll(`${selectors.main}[data-zenfeed-hidden="true"]`);
         show(reelsPage);
+    }
+
+    const blockStoriesSection = path.includes(urls.stories) && settings.fb_blockStories;
+    if (blockStoriesSection) {
+        hide(body);
+    } else if (path.includes(urls.stories)) {
+        show(body);
+    }
+
+    if (path === urls.base) {
+        if (settings.fb_blockStories) {
+            const storyFeed = body?.querySelector(selectors.storyFeed);
+            hide(storyFeed);
+        } else {
+            const storyFeed = document.querySelector(`${selectors.storyFeed}[data-zenfeed-hidden="true"]`);
+            show(storyFeed);
+        }
+
+        if (settings.fb_blockPosts) {
+            const posts = body?.querySelector(selectors.posts);
+            const postsLoader = body?.querySelector(selectors.postsLoader);
+            const postsContainer = posts?.parentElement?.parentElement?.parentElement;
+            hide(posts);
+            hide(postsLoader);
+            hide(postsContainer);
+        } else {
+            const posts = document.querySelector(`${selectors.posts}[data-zenfeed-hidden="true"]`);
+            const postsLoader = body?.querySelector(`${selectors.postsLoader}[data-zenfeed-hidden="true"]`);
+            const postsContainer = posts?.parentElement?.parentElement?.parentElement;
+            show(posts);
+            show(postsLoader);
+            show(postsContainer);
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 export const defaultSettings = {
-    hideReels: true,
-    hideHomeFeed: false,
-    hideStories: false,
+    fb_blockReels: true,
+    fb_blockPosts: false,
+    fb_blockStories: false,
 };
 
 export const labelsArray = Object.keys(defaultSettings);
@@ -15,6 +15,9 @@ export const urls = {
 export const selectors = {
     main: "[role=main]",
     reels: "a[href*='/reel']",
+    storyFeed: "div[aria-label='Stories']",
+    posts: "div[role='article']",
+    postsLoader: "div[data-visualcompletion='loading-state']",
 };
 
 export const hide = (elements) => {
