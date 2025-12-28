@@ -5,17 +5,21 @@
 }
 
 body {
-  width: 320px;
+  width: 350px;
+  min-height: 340px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #1a1a1a;
   color: #e0e0e0;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 12px 14px;
   background: #252525;
   border-bottom: 1px solid #333;
 }
@@ -23,32 +27,33 @@ body {
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .logo img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .logo span {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .toggle-list {
-  padding: 8px;
+  padding: 4px;
 }
 
 .toggle-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 8px 10px;
   cursor: pointer;
   user-select: none;
-  border-radius: 6px;
-  transition: background 0.2s;
+  border-radius: 4px;
+  transition: background 0.15s;
 }
 
 .toggle-item:hover {
@@ -56,7 +61,8 @@ body {
 }
 
 .toggle-item span:first-child {
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .toggle-item input[type="checkbox"] {
@@ -65,73 +71,111 @@ body {
 
 .toggle-switch {
   position: relative;
-  width: 44px;
-  height: 24px;
-  background: #444;
-  border-radius: 12px;
-  transition: background 0.3s;
+  width: 36px;
+  height: 20px;
+  background: #3a3a3a;
+  border-radius: 10px;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 .toggle-switch::before {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: white;
+  background: #888;
   top: 2px;
   left: 2px;
-  transition: transform 0.3s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .toggle-item input[type="checkbox"]:checked + .toggle-switch {
-  background: #3B82F6;
+  background: #4a90e2;
 }
 
 .toggle-item input[type="checkbox"]:checked + .toggle-switch::before {
-  transform: translateX(20px);
+  transform: translateX(16px);
+  background: white;
 }
 
 .platform-selector {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 14px;
+  border-bottom: 1px solid #333;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .platform-selector label {
-  font-weight: 600;
-  font-size: 14px;
-  color: #e4e4e4;
+  font-weight: 500;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .platform-selector select {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: white;
+  padding: 6px 8px;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
 
 .platform-selector select:hover {
-  border-color: #999;
+  border-color: #4a4a4a;
 }
 
 .platform-selector select:focus {
-  border-color: #0095f6;
-  box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1);
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
 }
 
 .toggle-list {
   display: block;
+  min-height: 240px;
+  flex: 1;
 }
 
 .toggle-list[style*="display: none"] {
   display: none !important;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  background: #1f1f1f;
+  border-top: 1px solid #333;
+  padding: 0;
+  margin-top: auto;
+}
+
+.footer-link {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  font-size: 10px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.15s;
+  border-right: 1px solid #333;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.footer-link:last-child {
+  border-right: none;
+}
+
+.footer-link:hover {
+  color: #4a90e2;
 }
