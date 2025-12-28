@@ -20,14 +20,7 @@ function applySettings() {
 
     if (settings.fb_blockReels) {
         const reelLinks = body?.querySelectorAll(selectors.reels);
-        reelLinks?.forEach(link => {
-            // Walk up 3 levels to get the container
-            let container = link;
-            for (let i = 0; i < 3 && container.parentElement; i++) {
-                container = container.parentElement;
-            }
-            hide(container);
-        });
+        hide(reelLinks);
     } else {
         const hiddenReels = document.querySelectorAll(`[data-zenfeed-hidden="true"]`);
         show(hiddenReels);
