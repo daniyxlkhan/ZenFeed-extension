@@ -73,6 +73,10 @@ function switchPlatform(platform) {
 
 document.addEventListener('DOMContentLoaded', async() => {
     const platformSelector = document.getElementById('platform');
+    const supportLink = document.getElementById('supportLink');
+    const backButton = document.getElementById('backButton');
+    const supportView = document.getElementById('supportView');
+    const mainView = document.getElementById('mainView');
 
     // get the last selected platform
     const result = await chrome.storage.sync.get('lastPlatform');
@@ -92,5 +96,17 @@ document.addEventListener('DOMContentLoaded', async() => {
 
             saveOptions(currentPlatform);
         }
+    });
+
+    // support page navigation
+    supportLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        mainView.style.display = 'none';
+        supportView.style.display = 'block';
+    });
+
+    backButton.addEventListener('click', () => {
+        supportView.style.display = 'none';
+        mainView.style.display = 'block';
     });
 });
