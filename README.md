@@ -1,4 +1,4 @@
-# <img src="images/icon32.png" alt="ZenFeed Logo" width="32"/> ZenFeed - Hide Shorts & Reels
+# <img src="source/images/icon32.png" alt="ZenFeed Logo" width="32"/> ZenFeed - Hide Shorts & Reels
 
 Block distracting content across Instagram, YouTube, and Facebook. ZenFeed removes reels, shorts, explore pages, stories, suggested posts, and other addictive feeds so you can use social media intentionally.
 
