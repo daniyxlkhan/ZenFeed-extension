@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ZenFeed Options</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <!-- Main View -->
+    <div id="mainView">
+      <div class="header">
+        <div class="logo">
+          <img src="../images/icon32.png" alt="ZenFeed">
+          <span>ZenFeed</span>
+        </div>
+      </div>
+
+      <div class="platform-selector">
+        <label for="platform">Platform:</label>
+        <select id="platform">
+          <option value="instagram">Instagram</option>
+          <option value="youtube">YouTube</option>
+          <option value="facebook">Facebook</option>
+        </select>
+      </div>
+
+      <!-- Instagram Options -->
+      <div class="toggle-list" data-platform="instagram">
+        <label class="toggle-item">
+          <span>Hide 'Reels'</span>
+          <input type="checkbox" id="blockReels">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Explore' page</span>
+          <input type="checkbox" id="blockExplore">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Stories' section</span>
+          <input type="checkbox" id="blockStories">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Posts' section</span>
+          <input type="checkbox" id="blockPosts">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Suggested Followers' section</span>
+          <input type="checkbox" id="blockSuggestedFollowers">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Redirect 'For you' feed to "Following"</span>
+          <input type="checkbox" id="blockForYouFeed">
+          <span class="toggle-switch"></span>
+        </label>
+      </div>
+
+      <!-- YouTube Options -->
+      <div class="toggle-list" data-platform="youtube">
+        <label class="toggle-item">
+          <span>Hide 'Shorts'</span>
+          <input type="checkbox" id="hideShorts">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Home Feed'</span>
+          <input type="checkbox" id="hideHomeFeed">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Subscriptions' page</span>
+          <input type="checkbox" id="hideSubscriptions">
+          <span class="toggle-switch"></span>
+        </label>
+      </div>
+
+      <!-- Facebook Options -->
+      <div class="toggle-list" data-platform="facebook">
+        <label class="toggle-item">
+          <span>Hide 'Reels'</span>
+          <input type="checkbox" id="fb_blockReels">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Posts' section</span>
+          <input type="checkbox" id="fb_blockPosts">
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-item">
+          <span>Hide 'Stories' section</span>
+          <input type="checkbox" id="fb_blockStories">
+          <span class="toggle-switch"></span>
+        </label>
+      </div>
+
+      <div class="footer">
+        <a href="https://ko-fi.com/daniyxlkhan" target="_blank" class="footer-link">Donate</a>
+        <a href="https://forms.gle/s9H9nyrVwfACXij48" target="_blank" class="footer-link">Request Feature</a>
+        <a href="#" id="supportLink" class="footer-link">Support</a>
+      </div>
+    </div>
+
+    <!-- Support View -->
+    <div id="supportView" style="display: none;">
+      <div class="header">
+        <button id="backButton" class="back-button">← Back</button>
+      </div>
+
+      <div class="support-content">
+        <h2>ZenFeed isn't working?</h2>
+        
+        <div class="troubleshooting">
+          <p class="section-title">Try these steps:</p>
+          <ol>
+            <li>Refresh the page</li>
+            <li>Close all tabs and restart the browser</li>
+            <li>Disable and re-enable ZenFeed</li>
+            <li>Uninstall and re-install ZenFeed</li>
+            <li>Check if your browser is up to date</li>
+          </ol>
+        </div>
+
+        <div class="contact">
+          <p class="section-title">Still having issues?</p>
+          <p>Email me at <a href="mailto:daniyaldevelops@gmail.com" class="email-link">daniyaldevelops@gmail.com</a> with:</p>
+          <ul>
+            <li>What's not working</li>
+            <li>Your browser and version</li>
+            <li>Screenshots or video</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
