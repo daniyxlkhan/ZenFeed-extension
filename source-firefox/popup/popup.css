@@ -101,42 +101,71 @@ body {
   background: white;
 }
 
-.platform-selector {
-  padding: 10px 14px;
-  border-bottom: 1px solid #333;
+/* Platform Tabs */
+.platform-tabs {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 0;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  padding: 0;
 }
 
-.platform-selector label {
-  font-weight: 500;
-  font-size: 11px;
-  color: #999;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.platform-selector select {
+.platform-tabs .tab {
   flex: 1;
-  padding: 6px 8px;
-  border: 1px solid #3a3a3a;
-  border-radius: 4px;
-  font-size: 12px;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
   cursor: pointer;
-  outline: none;
-  transition: border-color 0.15s;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
 }
 
-.platform-selector select:hover {
-  border-color: #4a4a4a;
+.platform-tabs .tab:hover {
+  background: #2a2a2a;
 }
 
-.platform-selector select:focus {
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+/* Instagram */
+.platform-tabs .tab.fa-instagram {
+  color: #E1306C;
+}
+
+.platform-tabs .tab.fa-instagram:hover {
+  color: #C13584;
+}
+
+.platform-tabs .tab.fa-instagram.active {
+  color: #E1306C;
+  border-bottom-color: #E1306C;
+}
+
+/* YouTube */
+.platform-tabs .tab.fa-youtube {
+  color: #FF0000;
+}
+
+.platform-tabs .tab.fa-youtube:hover {
+  color: #CC0000;
+}
+
+.platform-tabs .tab.fa-youtube.active {
+  color: #FF0000;
+  border-bottom-color: #FF0000;
+}
+
+/* Facebook */
+.platform-tabs .tab.fa-facebook {
+  color: #1877F2;
+}
+
+.platform-tabs .tab.fa-facebook:hover {
+  color: #166FE5;
+}
+
+.platform-tabs .tab.fa-facebook.active {
+  color: #1877F2;
+  border-bottom-color: #1877F2;
 }
 
 .toggle-list {
@@ -189,6 +218,12 @@ body {
 
 #supportView .header {
   padding: 8px 14px;
+}
+
+#mainView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .back-button {
@@ -273,10 +308,4 @@ body {
 
 .email-link:hover {
   text-decoration: underline;
-}
-
-#mainView {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
