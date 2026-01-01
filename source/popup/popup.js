@@ -49,20 +49,24 @@ function restoreOptions(platform) {
 }
 
 function switchPlatform(platform) {
-    document.querySelectorAll('[data-platform]').forEach(section => {
+    // Hide all toggle lists
+    document.querySelectorAll('.toggle-list').forEach(section => {
         section.style.display = 'none';
     });
 
-    const selectedSection = document.querySelector(`[data-platform="${platform}"]`);
+    // Show selected platform
+    const selectedSection = document.querySelector(`.toggle-list[data-platform="${platform}"]`);
     if (selectedSection) {
         selectedSection.style.display = 'block';
     }
     
-    // update dropdown to match the current platform
-    const platformSelector = document.getElementById('platform');
-    if (platformSelector) {
-        platformSelector.value = platform;
-    }
+    // Update tab active state
+    document.querySelectorAll('.platform-tabs .tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.platform === platform) {
+            tab.classList.add('active');
+        }
+    });
 
     chrome.storage.sync.set({ lastPlatform: platform });
 
@@ -72,20 +76,42 @@ function switchPlatform(platform) {
 }
 
 document.addEventListener('DOMContentLoaded', async() => {
-    const platformSelector = document.getElementById('platform');
+    const tabs = document.querySelectorAll('.platform-tabs .tab');
     const supportLink = document.getElementById('supportLink');
     const backButton = document.getElementById('backButton');
     const supportView = document.getElementById('supportView');
     const mainView = document.getElementById('mainView');
 
-    // get the last selected platform
-    const result = await chrome.storage.sync.get('lastPlatform');
-    const lastPlatform = result.lastPlatform || 'instagram';
+    // Auto-detect platform from current tab
+    let detectedPlatform = 'instagram'; // default
+    try {
+        const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const url = activeTab.url;
+        
+        if (url.includes('instagram.com')) {
+            detectedPlatform = 'instagram';
+        } else if (url.includes('youtube.com')) {
+            detectedPlatform = 'youtube';
+        } else if (url.includes('facebook.com')) {
+            detectedPlatform = 'facebook';
+        } else {
+            // Not on a supported platform, use last selected
+            const result = await chrome.storage.sync.get('lastPlatform');
+            detectedPlatform = result.lastPlatform || 'instagram';
+        }
+    } catch (error) {
+        // Fallback to last platform
+        const result = await chrome.storage.sync.get('lastPlatform');
+        detectedPlatform = result.lastPlatform || 'instagram';
+    }
 
-    switchPlatform(lastPlatform);
+    switchPlatform(detectedPlatform);
     
-    platformSelector.addEventListener('change', (e) => {
-        switchPlatform(e.target.value);
+    // Tab click handlers
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            switchPlatform(tab.dataset.platform);
+        });
     });
 
     // listen on body for all checkbox changes
