@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>ZenFeed Options</title>
     <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <!-- Main View -->
@@ -15,13 +16,10 @@
         </div>
       </div>
 
-      <div class="platform-selector">
-        <label for="platform">Platform:</label>
-        <select id="platform">
-          <option value="instagram">Instagram</option>
-          <option value="youtube">YouTube</option>
-          <option value="facebook">Facebook</option>
-        </select>
+      <div class="platform-tabs">
+        <i class="fa fa-instagram tab" data-platform="instagram"></i>
+        <i class="fa fa-youtube tab" data-platform="youtube"></i>
+        <i class="fa fa-facebook tab" data-platform="facebook"></i>
       </div>
 
       <!-- Instagram Options -->

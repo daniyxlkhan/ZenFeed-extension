@@ -1,3 +1,4 @@
 .vscode
-source/tmp
-source-firefox/tmp
+tmp/
+*.zip
+.DS_Store

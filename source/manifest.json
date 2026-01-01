@@ -9,7 +9,7 @@
         "128": "images/icon128.png"
     },
 
-    "permissions": ["storage"],
+    "permissions": ["storage", "tabs"],
     "content_scripts": [
         {
             "matches": [
