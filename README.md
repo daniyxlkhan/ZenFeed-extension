@@ -32,7 +32,9 @@ To keep things simple and lightweight, ZenFeed uses browser native functionaliti
 
 ## 📥 Set it up in your browser
 
-Download it from the [Chrome Web Store](https://chromewebstore.google.com/detail/ZenFeed%20-%20Hide%20Shorts%20%26%20Reels/cpamdbkgjacecpfcmcclkaefpfnekoal) or install it manually following these steps:
+Download it from the [Chrome Web Store](https://chromewebstore.google.com/detail/ZenFeed%20-%20Hide%20Shorts%20%26%20Reels/cpamdbkgjacecpfcmcclkaefpfnekoal) or [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/zenfeed-hide-shorts-reels/) 
+
+To install it manually for Chrome follow these steps:
 
 1. Clone the repo: `git clone https://github.com/daniyxlkhan/zenfeed-web-extension.git` or download the ZIP
 2. Go to Google Chrome and click **'Customize'** (the three-dot icon in the top-right corner)
