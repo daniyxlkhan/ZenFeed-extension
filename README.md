@@ -44,6 +44,17 @@ To install it manually for Chrome follow these steps:
 6. Select the `ZenFeed-extension` folder
 7. Done! The extension icon should appear in your toolbar
 
+To install it manually for Firefox follow these steps:
+
+1. Clone the repo: `git clone https://github.com/daniyxlkhan/zenfeed-web-extension.git` or download the ZIP
+2. Open Firefox
+3. In the address bar, go to **'about:debugging'**
+4. Click This Firefox
+5. Click **'Load Temporary Add-on'**
+6. Select the **'manifest.json'** file inside the `ZenFeed-extension` folder
+7. Done! The extension is now loaded and active (note: it will be removed when Firefox is closed)
+
+
 ## ⚠️ Disclaimer
 
 Social media platforms update frequently, which may occasionally break some features. If something stops working:
