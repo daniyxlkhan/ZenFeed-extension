@@ -23,19 +23,23 @@ function applySettings() {
         const shortsHomeFeedContainer = body?.querySelectorAll(selectors.shortsContainers.homeFeed);
         const shortsSearchFeedContainer = body?.querySelectorAll(selectors.shortsContainers.searchFeed);
         const shortsTabContainer = body?.querySelectorAll(selectors.shortsContainers.longShortsTab);
+        const shortsRecommendedContainer = body?.querySelectorAll(selectors.shortsContainers.recommendedFeed);
         hide(shortLinks);
         hide(shortsHomeFeedContainer);
         hide(shortsSearchFeedContainer);
         hide(shortsTabContainer);
+        hide(shortsRecommendedContainer);
     } else {
         const shortLinks = body?.querySelectorAll(`${selectors.shorts}[data-zenfeed-hidden="true"]`);
         const shortsHomeFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.homeFeed}[data-zenfeed-hidden="true"]`);
         const shortsSearchFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.searchFeed}[data-zenfeed-hidden="true"]`);
         const shortsTabContainer = body?.querySelectorAll(`${selectors.shortsContainers.longShortsTab}[data-zenfeed-hidden="true"]`);
+        const shortsRecommendedContainer = body?.querySelectorAll(`${selectors.shortsContainers.recommendedFeed}[data-zenfeed-hidden="true"]`);
         show(shortLinks);
         show(shortsHomeFeedContainer);
         show(shortsSearchFeedContainer);
         show(shortsTabContainer);
+        show(shortsRecommendedContainer);
     }
 
     if (settings.hideSubscriptions) {
