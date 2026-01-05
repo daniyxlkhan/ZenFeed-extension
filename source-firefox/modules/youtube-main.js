@@ -76,6 +76,14 @@ function applySettings() {
         const main = body?.querySelector(`${selectors.shortsPlayer}[data-zenfeed-hidden="true"]`);
         hide(main);
     }
+
+    if (settings.hideRecommendedVideosSideBar) {
+        const recommendedVideosSideBar = body?.querySelector(selectors.recommendedVideosSideBar);
+        hide(recommendedVideosSideBar);
+    } else {
+        const recommendedVideosSideBar = body?.querySelector(`${selectors.recommendedVideosSideBar}[data-zenfeed-hidden="true"]`);
+        show(recommendedVideosSideBar);
+    }
 }
 
 
