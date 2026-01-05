@@ -2,6 +2,7 @@ export const defaultSettings = {
     hideShorts: true,
     hideHomeFeed: false,
     hideSubscriptions: false,
+    hideRecommendedVideosSideBar: false,
 };
 
 export const labelsArray = Object.keys(defaultSettings);
@@ -15,18 +16,23 @@ export const urls = {
 export const selectors = {
     main: "[role=main]",
     homePage: "ytd-browse[page-subtype='home']",
+
     subscriptions: "a[href*='/feed/subscriptions']",
     subscriptionContainers: {
         subscriptionsPage: "ytd-browse[page-subtype='subscriptions']",
         sideBarSubscriptionList: 'ytd-guide-renderer ytd-guide-section-renderer:nth-of-type(2)',
     },
+
     shorts: "a[href*='/shorts']",
     shortsPlayer: "ytd-shorts",
     shortsContainers: {
         homeFeed: 'ytd-rich-section-renderer',
         searchFeed: 'grid-shelf-view-model',
+        recommendedFeed: 'ytd-reel-shelf-renderer',
         longShortsTab: 'ytd-guide-section-renderer ytd-guide-entry-renderer:nth-of-type(2)',
-    }
+    },
+
+    recommendedVideosSideBar: 'div[id=secondary]',
 };
 
 export const hide = (elements) => {
