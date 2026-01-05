@@ -1,7 +1,7 @@
 {
     "name": "ZenFeed - Hide Shorts & Reels",
     "description": "Helps you stay focused by hiding short-form content like YouTube Shorts, Instagram Reels, and Facebook Reels.",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "manifest_version": 3,
     
     "browser_specific_settings": {
