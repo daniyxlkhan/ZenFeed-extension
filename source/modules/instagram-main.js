@@ -1,4 +1,4 @@
-import { labelsArray, defaultSettings, selectors, urls, hide, show } from "./instagram-lib.js";
+import { labelsArray, defaultSettings, selectors, urls, hide, show, exploreGridSection } from "./instagram-lib.js";
 
 let settings = { ...defaultSettings };
 
@@ -17,14 +17,6 @@ async function loadSettings() {
 function applySettings() {
     const path = window.location.pathname;
     const body = document.body;
-
-    if (settings.blockExplore) {
-        const exploreLinks = body?.querySelectorAll(selectors.nav.explore);
-        hide(exploreLinks);
-    } else {
-        const exploreLinks = document.querySelectorAll(`${selectors.nav.explore}[data-zenfeed-hidden="true"]`);
-        show(exploreLinks);
-    }
 
     if (settings.blockReels) {
         const reelsLinks = body?.querySelectorAll(selectors.nav.reels);
@@ -53,10 +45,11 @@ function applySettings() {
     const blockExploreScreen = path.includes(urls.explore) && settings.blockExplore;
     if (blockExploreScreen) {
         const main = body?.querySelector(selectors.main);
-        hide(main);
+        hide(exploreGridSection(main));
     } else if (path.includes(urls.explore)) {
-        const main = document.querySelector(`${selectors.main}[data-zenfeed-hidden="true"]`);
-        show(main);
+        const main = body?.querySelector(selectors.main);
+        const exploreGrid = main?.querySelectorAll(`[data-zenfeed-hidden="true"]`);
+        show(exploreGrid);
     }
 
     if (path === urls.base) {

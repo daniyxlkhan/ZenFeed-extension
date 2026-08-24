@@ -22,10 +22,10 @@ export const selectors = {
     posts: "article",
     postsLoader: "[data-visualcompletion='loading-state']",
     suggestedFollowers: "a[href*='/explore/people/']",
+    exploreGrid: "div[style*='gridTemplateColumns']",
     nav: {
         direct: "a[href*='/direct/inbox/']",
         activity: "a[href*='/accounts/activity']",
-        explore: "a[href*='/explore/']",
         reels: "a[href*='/reels/']",
     }
 };
@@ -58,4 +58,18 @@ export const show = (elements) => {
             delete element.dataset.zenfeedHidden;
         });
     }
+};
+
+
+export const exploreGridSection = (main) => {
+    const grid = main?.querySelector(selectors.exploreGrid);
+    if (!grid) return null;
+
+    let section = grid;
+    for (let i = 0; i < 3; i++) {
+        const parent = section.parentElement;
+        if (!parent || parent === main || parent === document.body) break;
+        section = parent;
+    }
+    return section;
 };
