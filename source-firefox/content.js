@@ -12,7 +12,12 @@
         modulePath = './modules/facebook-main.js';
     }
     
-    const src = chrome.runtime.getURL(modulePath);
-    const contentScript = await import(src);
-    contentScript.main();
+    // fails in tabs left open while the extension was updated or reloaded
+    try {
+        const src = chrome.runtime.getURL(modulePath);
+        const contentScript = await import(src);
+        contentScript.main();
+    } catch (error) {
+        console.warn('ZenFeed could not start, reload the page:', error);
+    }
 })();
