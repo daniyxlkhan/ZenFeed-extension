@@ -81,5 +81,5 @@ I'll review it when I can (no promises on timeline, but I appreciate your help!)
 
 ##### ℹ️ Sources
 
-This extension is mostly inspired by aymyo's
+This extension was inspired by aymyo's
 [antigram-extension](https://github.com/aymyo/antigram-extension), which has blocking features but only for instagram. My goal was to combine the major platforms into one extension.
