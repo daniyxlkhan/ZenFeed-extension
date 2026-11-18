@@ -1,4 +1,4 @@
-import { labelsArray, defaultSettings, selectors, urls, hide, show } from "./youtube-lib.js";
+import { labelsArray, defaultSettings, selectors, urls, hide, show, pauseHiddenVideos } from "./youtube-lib.js";
 
 let settings = { ...defaultSettings };
 
@@ -22,7 +22,9 @@ function applySettings() {
         const shortLinks = body?.querySelectorAll(selectors.shorts);
         const shortsHomeFeedContainer = body?.querySelectorAll(selectors.shortsContainers.homeFeed);
         const shortsSearchFeedContainer = body?.querySelectorAll(selectors.shortsContainers.searchFeed);
-        const shortsTabContainer = body?.querySelectorAll(selectors.shortsContainers.longShortsTab);
+        // closest() instead of :has(), which Firefox < 121 doesn't support
+        const shortsTabContainer = [...(body?.querySelectorAll(selectors.shortsContainers.longShortsTab) ?? [])]
+            .map((link) => link.closest(selectors.shortsContainers.longShortsTabEntry));
         const shortsRecommendedContainer = body?.querySelectorAll(selectors.shortsContainers.recommendedFeed);
         hide(shortLinks);
         hide(shortsHomeFeedContainer);
@@ -33,7 +35,7 @@ function applySettings() {
         const shortLinks = body?.querySelectorAll(`${selectors.shorts}[data-zenfeed-hidden="true"]`);
         const shortsHomeFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.homeFeed}[data-zenfeed-hidden="true"]`);
         const shortsSearchFeedContainer = body?.querySelectorAll(`${selectors.shortsContainers.searchFeed}[data-zenfeed-hidden="true"]`);
-        const shortsTabContainer = body?.querySelectorAll(`${selectors.shortsContainers.longShortsTab}[data-zenfeed-hidden="true"]`);
+        const shortsTabContainer = body?.querySelectorAll(`${selectors.shortsContainers.longShortsTabEntry}[data-zenfeed-hidden="true"]`);
         const shortsRecommendedContainer = body?.querySelectorAll(`${selectors.shortsContainers.recommendedFeed}[data-zenfeed-hidden="true"]`);
         show(shortLinks);
         show(shortsHomeFeedContainer);
@@ -52,6 +54,14 @@ function applySettings() {
         const sideBarSubscriptionList = body?.querySelectorAll(`${selectors.subscriptionContainers.sideBarSubscriptionList}[data-zenfeed-hidden="true"]`);
         show(subscriptions);
         show(sideBarSubscriptionList);
+    }
+
+    if (settings.hideRecommendedVideosSideBar) {
+        const recommendedVideos = body?.querySelector(selectors.recommendedVideosSideBar);
+        hide(recommendedVideos);
+    } else {
+        const recommendedVideos = body?.querySelector(`${selectors.recommendedVideosSideBar}[data-zenfeed-hidden="true"]`);
+        show(recommendedVideos);
     }
 
     const hideSubscriptions = path.includes(urls.subscriptions) && settings.hideSubscriptions;
@@ -78,16 +88,10 @@ function applySettings() {
         hide(main);
     } else if (path.includes(urls.shorts)) {
         const main = body?.querySelector(`${selectors.shortsPlayer}[data-zenfeed-hidden="true"]`);
-        hide(main);
+        show(main);
     }
 
-    if (settings.hideRecommendedVideosSideBar) {
-        const recommendedVideosSideBar = body?.querySelector(selectors.recommendedVideosSideBar);
-        hide(recommendedVideosSideBar);
-    } else {
-        const recommendedVideosSideBar = body?.querySelector(`${selectors.recommendedVideosSideBar}[data-zenfeed-hidden="true"]`);
-        show(recommendedVideosSideBar);
-    }
+    pauseHiddenVideos();
 }
 
 
@@ -124,6 +128,13 @@ export async function main() {
 
     settings = await loadSettings();
     applySettings();
+
+    // 'play' doesn't bubble, so listen in the capture phase
+    document.addEventListener('play', (event) => {
+        if (event.target.closest?.(selectors.hiddenByZenfeed)) {
+            event.target.pause();
+        }
+    }, true);
     
     // Now body exists, safe to observe
     observer.observe(document.body, {

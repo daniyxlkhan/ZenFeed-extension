@@ -29,10 +29,13 @@ export const selectors = {
         homeFeed: 'ytd-rich-section-renderer',
         searchFeed: 'grid-shelf-view-model',
         recommendedFeed: 'ytd-reel-shelf-renderer',
-        longShortsTab: 'ytd-guide-section-renderer ytd-guide-entry-renderer:nth-of-type(2)',
+        longShortsTab: ":is(ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer) a[title='Shorts']",
+        longShortsTabEntry: ':is(ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer)',
     },
 
-    recommendedVideosSideBar: 'div[id=secondary]',
+    recommendedVideosSideBar: 'ytd-watch-flexy #secondary',
+
+    hiddenByZenfeed: '[data-zenfeed-hidden="true"]',
 };
 
 export const hide = (elements) => {
@@ -42,7 +45,7 @@ export const hide = (elements) => {
         elements.style.display = "none";
         elements.dataset.zenfeedHidden = 'true';
     }
-    if (elements instanceof NodeList) {
+    if (elements instanceof NodeList || Array.isArray(elements)) {
         elements.forEach((element) => {
             element.style.display = "none";
             element.dataset.zenfeedHidden = 'true';
@@ -57,10 +60,16 @@ export const show = (elements) => {
         elements.style.display = "";
         delete elements.dataset.zenfeedHidden;
     }
-    if (elements instanceof NodeList) {
+    if (elements instanceof NodeList || Array.isArray(elements)) {
         elements.forEach((element) => {
             element.style.display = "";
             delete element.dataset.zenfeedHidden;
         });
     }
+};
+
+export const pauseHiddenVideos = () => {
+    document.querySelectorAll(selectors.hiddenByZenfeed).forEach((element) => {
+        element.querySelectorAll('video').forEach((video) => video.pause());
+    });
 };
