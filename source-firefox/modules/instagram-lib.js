@@ -1,6 +1,7 @@
 export const defaultSettings = {
     blockReels: true,
-    blockExplore: true,
+    blockFeedReels: false,
+    blockExploreReels: true,
     blockStories: false,
     blockPosts: false,
     blockSuggestedFollowers: false,
@@ -13,63 +14,114 @@ export const urls = {
     base: "/",
     stories: "/stories",
     reels: "/reels",
-    explore: "/explore"
+    reelsTab: "/reels/",
+    explore: "/explore",
+    direct: "/direct",
 };
 
 export const selectors = {
     main: "[role=main]",
     storyFeed: "div[data-pagelet='story_tray']",
     posts: "article",
+    reelPostLink: "article a[href*='/reels/']",
     postsLoader: "[data-visualcompletion='loading-state']",
     suggestedFollowers: "a[href*='/explore/people/']",
-    exploreGrid: "div[style*='gridTemplateColumns']",
+    exploreTileLink: "a[href*='/p/']",
+    exploreReelMarker: "video, svg[aria-label='Reel']",
+    exploreGridItem: "div[style*='gridTemplateColumns'] > div",
+    reelsViewerNavButtons: "[aria-label='Navigate to next reel'], [aria-label='Navigate to previous reel']",
+    hiddenByZenfeed: '[data-zenfeed-hidden="true"], [data-zenfeed-reel-hidden="true"], [data-zenfeed-reels-viewer="true"], '
+        + '[data-zenfeed-reels-screen="true"], [data-zenfeed-stories-screen="true"], [data-zenfeed-explore-reel-hidden="true"]',
     nav: {
         direct: "a[href*='/direct/inbox/']",
         activity: "a[href*='/accounts/activity']",
+        explore: "a[href*='/explore/']",
         reels: "a[href*='/reels/']",
     }
 };
 
-export const hide = (elements) => {
+// features that hide overlapping elements use separate markers, so one feature's show() can't undo another's hide()
+export const hide = (elements, marker = 'zenfeedHidden') => {
     if (!elements) return;
-    
+
     if (elements instanceof Node) {
         elements.style.display = "none";
-        elements.dataset.zenfeedHidden = 'true';
+        elements.dataset[marker] = 'true';
     }
-    if (elements instanceof NodeList) {
+    if (elements instanceof NodeList || Array.isArray(elements)) {
         elements.forEach((element) => {
             element.style.display = "none";
-            element.dataset.zenfeedHidden = 'true';
+            element.dataset[marker] = 'true';
         });
     }
 };
 
-export const show = (elements) => {
+export const show = (elements, marker = 'zenfeedHidden') => {
     if (!elements) return;
-    
+
     if (elements instanceof Node) {
         elements.style.display = "";
-        delete elements.dataset.zenfeedHidden;
+        delete elements.dataset[marker];
     }
-    if (elements instanceof NodeList) {
+    if (elements instanceof NodeList || Array.isArray(elements)) {
         elements.forEach((element) => {
             element.style.display = "";
-            delete element.dataset.zenfeedHidden;
+            delete element.dataset[marker];
         });
     }
 };
 
+// "Hide 'Explore' page" was replaced by "Hide 'Reels' on 'Explore'", carry the old choice over
+export const migrateSettings = async () => {
+    const stored = await chrome.storage.sync.get(['blockExplore', 'blockExploreReels']);
+    if (!('blockExplore' in stored)) return;
 
-export const exploreGridSection = (main) => {
-    const grid = main?.querySelector(selectors.exploreGrid);
-    if (!grid) return null;
-
-    let section = grid;
-    for (let i = 0; i < 3; i++) {
-        const parent = section.parentElement;
-        if (!parent || parent === main || parent === document.body) break;
-        section = parent;
+    if (!('blockExploreReels' in stored)) {
+        await chrome.storage.sync.set({ blockExploreReels: stored.blockExplore });
     }
-    return section;
+    await chrome.storage.sync.remove('blockExplore');
+};
+
+// the full-screen reels viewer is a layer on <body>, outside [role=main]
+export const reelsViewerLayers = (main) => {
+    return [...document.body.children].filter((layer) => !layer.contains(main) && layer.querySelector('video'));
+};
+
+const isScrollable = (element) => {
+    return element.scrollHeight > element.clientHeight + 5 && /(auto|scroll)/.test(getComputedStyle(element).overflowY);
+};
+
+// the viewer scrolls through reels in a list, one reel per screen
+export const reelsViewerScroller = (layer) => {
+    return [...layer.querySelectorAll('div')].find(isScrollable);
+};
+
+export const reelInView = (scroller) => {
+    const top = scroller.getBoundingClientRect().top;
+    return [...scroller.children].find((reel) => {
+        const rect = reel.getBoundingClientRect();
+        return Math.abs(rect.top - top) < rect.height / 2;
+    });
+};
+
+// e.g. the comments list, which must keep scrolling
+export const isInNestedScroller = (target, scroller, layer) => {
+    for (let element = target; element !== layer; element = element.parentElement) {
+        if (element !== scroller && isScrollable(element)) return true;
+    }
+    return false;
+};
+
+export const pauseHiddenVideos = () => {
+    document.querySelectorAll(selectors.hiddenByZenfeed).forEach((element) => {
+        element.querySelectorAll('video').forEach((video) => video.pause());
+    });
+};
+
+export const exploreReelTiles = (main) => {
+    const tiles = [...(main?.querySelectorAll(selectors.exploreTileLink) ?? [])]
+        .filter((link) => link.querySelector(selectors.exploreReelMarker))
+        .map((link) => link.closest(selectors.exploreGridItem))
+        .filter(Boolean);
+    return [...new Set(tiles)];
 };
