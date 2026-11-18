@@ -20,32 +20,32 @@ export const selectors = {
     postsLoader: "div[data-visualcompletion='loading-state']",
 };
 
-export const hide = (elements) => {
+export const hide = (elements, marker = 'zenfeedHidden') => {
     if (!elements) return;
     
     if (elements instanceof Node) {
         elements.style.display = "none";
-        elements.dataset.zenfeedHidden = 'true';
+        elements.dataset[marker] = 'true';
     }
     if (elements instanceof NodeList) {
         elements.forEach((element) => {
             element.style.display = "none";
-            element.dataset.zenfeedHidden = 'true';
+            element.dataset[marker] = 'true';
         });
     }
 };
 
-export const show = (elements) => {
+export const show = (elements, marker = 'zenfeedHidden') => {
     if (!elements) return;
     
     if (elements instanceof Node) {
         elements.style.display = "";
-        delete elements.dataset.zenfeedHidden;
+        delete elements.dataset[marker];
     }
     if (elements instanceof NodeList) {
         elements.forEach((element) => {
             element.style.display = "";
-            delete element.dataset.zenfeedHidden;
+            delete element.dataset[marker];
         });
     }
 };

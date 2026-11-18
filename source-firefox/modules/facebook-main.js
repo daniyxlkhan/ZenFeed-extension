@@ -26,20 +26,21 @@ function applySettings() {
         show(hiddenReels);
     }
 
+    // pages are shown again on every other path, since Facebook reuses <body> and [role=main] when navigating
     const blockReelsSection = path.includes(urls.reels) && settings.fb_blockReels;
     if (blockReelsSection) {
         const reelsPage = body?.querySelectorAll(selectors.main);
-        hide(reelsPage);
-    } else if (path.includes(urls.reels)) {
-        const reelsPage = document.querySelectorAll(`${selectors.main}[data-zenfeed-hidden="true"]`);
-        show(reelsPage);
+        hide(reelsPage, 'zenfeedReelsScreen');
+    } else {
+        const reelsPage = document.querySelectorAll(`${selectors.main}[data-zenfeed-reels-screen="true"]`);
+        show(reelsPage, 'zenfeedReelsScreen');
     }
 
     const blockStoriesSection = path.includes(urls.stories) && settings.fb_blockStories;
     if (blockStoriesSection) {
-        hide(body);
-    } else if (path.includes(urls.stories)) {
-        show(body);
+        hide(body, 'zenfeedStoriesScreen');
+    } else if (body?.dataset.zenfeedStoriesScreen) {
+        show(body, 'zenfeedStoriesScreen');
     }
 
     if (path === urls.base) {
