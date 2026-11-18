@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>ZenFeed Options</title>
     <link rel="stylesheet" href="popup.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/font-awesome.css">
   </head>
   <body>
     <!-- Main View -->
@@ -24,16 +24,29 @@
 
       <!-- Instagram Options -->
       <div class="toggle-list" data-platform="instagram">
-        <label class="toggle-item">
-          <span>Hide 'Reels'</span>
-          <input type="checkbox" id="blockReels">
-          <span class="toggle-switch"></span>
-        </label>
-        <label class="toggle-item">
-          <span>Hide 'Explore' page</span>
-          <input type="checkbox" id="blockExplore">
-          <span class="toggle-switch"></span>
-        </label>
+        <div class="toggle-group">
+          <!-- master switch, not a stored setting -->
+          <label class="toggle-item toggle-group-header">
+            <span>Reels</span>
+            <input type="checkbox" id="instagramReelsGroup" data-group-master="instagram-reels">
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-item toggle-group-item">
+            <span>Hide 'Reels' tab<small class="toggle-note">Also blocks the Reels player</small></span>
+            <input type="checkbox" id="blockReels" data-group="instagram-reels">
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-item toggle-group-item">
+            <span>Hide 'Reels' in feed</span>
+            <input type="checkbox" id="blockFeedReels" data-group="instagram-reels">
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-item toggle-group-item">
+            <span>Hide 'Reels' on 'Explore'</span>
+            <input type="checkbox" id="blockExploreReels" data-group="instagram-reels">
+            <span class="toggle-switch"></span>
+          </label>
+        </div>
         <label class="toggle-item">
           <span>Hide 'Stories' section</span>
           <input type="checkbox" id="blockStories">
@@ -50,7 +63,7 @@
           <span class="toggle-switch"></span>
         </label>
         <label class="toggle-item">
-          <span>Redirect 'For you' feed to "Following"</span>
+          <span>Redirect 'For You' feed to 'Following'</span>
           <input type="checkbox" id="blockForYouFeed">
           <span class="toggle-switch"></span>
         </label>
@@ -64,7 +77,7 @@
           <span class="toggle-switch"></span>
         </label>
         <label class="toggle-item">
-          <span>Hide 'Home Feed'</span>
+          <span>Hide 'Home' feed</span>
           <input type="checkbox" id="hideHomeFeed">
           <span class="toggle-switch"></span>
         </label>

@@ -1,4 +1,4 @@
-import { defaultSettings as instagramSettings, labelsArray as instagramLabels } from "../modules/instagram-lib.js";
+import { defaultSettings as instagramSettings, labelsArray as instagramLabels, migrateSettings as migrateInstagramSettings } from "../modules/instagram-lib.js";
 import { defaultSettings as youtubeSettings, labelsArray as youtubeLabels } from "../modules/youtube-lib.js";
 import { defaultSettings as facebookSettings, labelsArray as facebookLabels } from "../modules/facebook-lib.js";
 
@@ -45,6 +45,18 @@ function restoreOptions(platform) {
                 element.checked = settings[key];
             }
         }
+
+        refreshGroups();
+    });
+}
+
+// a group's master switch is on when all its toggles are, and half on when only some are
+function refreshGroups() {
+    document.querySelectorAll('[data-group-master]').forEach((master) => {
+        const items = [...document.querySelectorAll(`[data-group="${master.dataset.groupMaster}"]`)];
+        const checkedCount = items.filter((item) => item.checked).length;
+        master.checked = checkedCount === items.length;
+        master.indeterminate = checkedCount > 0 && checkedCount < items.length;
     });
 }
 
@@ -86,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async() => {
     let detectedPlatform = 'instagram'; // default
     try {
         const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        const url = activeTab.url;
+        const url = activeTab?.url ?? '';
         
         if (url.includes('instagram.com')) {
             detectedPlatform = 'instagram';
@@ -105,6 +117,8 @@ document.addEventListener('DOMContentLoaded', async() => {
         detectedPlatform = result.lastPlatform || 'instagram';
     }
 
+    await migrateInstagramSettings();
+
     switchPlatform(detectedPlatform);
     
     // Tab click handlers
@@ -117,6 +131,13 @@ document.addEventListener('DOMContentLoaded', async() => {
     // listen on body for all checkbox changes
     document.body.addEventListener('change', async (e) => {
         if (e.target.type === 'checkbox' && e.target.closest('[data-platform]')) {
+            if (e.target.dataset.groupMaster) {
+                document.querySelectorAll(`[data-group="${e.target.dataset.groupMaster}"]`).forEach((item) => {
+                    item.checked = e.target.checked;
+                });
+            }
+            refreshGroups();
+
             const result = await chrome.storage.sync.get('lastPlatform');
             const currentPlatform = result.lastPlatform || 'instagram';
 

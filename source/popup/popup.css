@@ -309,3 +309,34 @@ body {
 .email-link:hover {
   text-decoration: underline;
 }
+
+/* Toggle groups */
+.toggle-group {
+  margin: 2px 0 4px;
+  border-radius: 6px;
+  background: #202020;
+}
+
+.toggle-group-header span:first-child {
+  font-weight: 600;
+}
+
+.toggle-group-item {
+  padding-left: 22px;
+}
+
+.toggle-item input[type="checkbox"]:indeterminate + .toggle-switch {
+  background: #2f5a8a;
+}
+
+.toggle-item input[type="checkbox"]:indeterminate + .toggle-switch::before {
+  transform: translateX(8px);
+  background: #cfd8e3;
+}
+
+.toggle-note {
+  display: block;
+  font-size: 10px;
+  color: #888;
+  margin-top: 2px;
+}

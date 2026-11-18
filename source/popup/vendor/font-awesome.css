@@ -1,0 +1,22 @@
+/*!
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ *  Bundled locally (only the icons the popup uses) so the popup makes no network requests.
+ */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('fontawesome-webfont.woff2?v=4.7.0') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.fa-facebook:before { content: "\f09a"; }
+.fa-youtube:before { content: "\f167"; }
+.fa-instagram:before { content: "\f16d"; }
