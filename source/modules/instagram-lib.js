@@ -2,6 +2,7 @@ export const defaultSettings = {
     blockReels: true,
     blockFeedReels: false,
     blockExploreReels: true,
+    blockExplorePage: false,
     blockStories: false,
     blockPosts: false,
     blockSuggestedFollowers: false,
@@ -16,6 +17,8 @@ export const urls = {
     reels: "/reels",
     reelsTab: "/reels/",
     explore: "/explore",
+    explorePage: "/explore/",
+    exploreSearch: "/explore/search",
     direct: "/direct",
 };
 
@@ -31,7 +34,8 @@ export const selectors = {
     exploreGridItem: "div[style*='gridTemplateColumns'] > div",
     reelsViewerNavButtons: "[aria-label='Navigate to next reel'], [aria-label='Navigate to previous reel']",
     hiddenByZenfeed: '[data-zenfeed-hidden="true"], [data-zenfeed-reel-hidden="true"], [data-zenfeed-reels-viewer="true"], '
-        + '[data-zenfeed-reels-screen="true"], [data-zenfeed-stories-screen="true"], [data-zenfeed-explore-reel-hidden="true"]',
+        + '[data-zenfeed-reels-screen="true"], [data-zenfeed-stories-screen="true"], [data-zenfeed-explore-reel-hidden="true"], '
+        + '[data-zenfeed-explore-hidden="true"]',
     nav: {
         direct: "a[href*='/direct/inbox/']",
         activity: "a[href*='/accounts/activity']",
@@ -124,4 +128,15 @@ export const exploreReelTiles = (main) => {
         .map((link) => link.closest(selectors.exploreGridItem))
         .filter(Boolean);
     return [...new Set(tiles)];
+};
+
+// the post grid under the search bar, climbing as high as possible without taking the search bar with it
+export const exploreGridSection = (main) => {
+    let section = main?.querySelector(selectors.exploreGridItem)?.parentElement;
+    if (!section) return null;
+
+    while (section.parentElement && section.parentElement !== main && !section.parentElement.querySelector('input')) {
+        section = section.parentElement;
+    }
+    return section;
 };

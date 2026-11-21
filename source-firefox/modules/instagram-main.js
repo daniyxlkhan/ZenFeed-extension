@@ -1,4 +1,4 @@
-import { labelsArray, defaultSettings, selectors, urls, hide, show, migrateSettings, exploreReelTiles, reelsViewerLayers, reelsViewerScroller, reelInView, isInNestedScroller, pauseHiddenVideos } from "./instagram-lib.js";
+import { labelsArray, defaultSettings, selectors, urls, hide, show, migrateSettings, exploreReelTiles, exploreGridSection, reelsViewerLayers, reelsViewerScroller, reelInView, isInNestedScroller, pauseHiddenVideos } from "./instagram-lib.js";
 
 let settings = { ...defaultSettings };
 
@@ -124,9 +124,19 @@ function applySettings() {
         show(reelsViewer, 'zenfeedReelsViewer');
     }
 
+    // only the grid goes, so the search bar on Explore keeps working
+    const onExplorePage = path === urls.explorePage || path.startsWith(urls.exploreSearch);
+    if (onExplorePage && settings.blockExplorePage) {
+        hide(exploreGridSection(main), 'zenfeedExploreHidden');
+    } else if (!settings.blockExplorePage) {
+        const exploreGrid = document.querySelectorAll(`[data-zenfeed-explore-hidden="true"]`);
+        show(exploreGrid, 'zenfeedExploreHidden');
+    }
+
+    // a post opened from Explore is a /p/ modal over the grid, so tiles stay hidden until the setting is turned off
     if (path.includes(urls.explore) && settings.blockExploreReels) {
         hide(exploreReelTiles(main), 'zenfeedExploreReelHidden');
-    } else {
+    } else if (!settings.blockExploreReels) {
         const exploreReels = document.querySelectorAll(`[data-zenfeed-explore-reel-hidden="true"]`);
         show(exploreReels, 'zenfeedExploreReelHidden');
     }
@@ -205,15 +215,27 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     }
 });
 
+// going back (e.g. closing a post modal) can change the URL while only removing nodes
 const observer = new MutationObserver((mutations) => {
     const hasAddedNodes = mutations.some(mutation => mutation.addedNodes.length > 0);
-    if (hasAddedNodes) {
+    if (hasAddedNodes || window.location.pathname !== lastPath) {
         applySettings();
     }
 });
 
 // export main function for dynamic import
 export async function main() {
+    // the script runs at document_start, and observing a missing <body> would throw and stop all blocking
+    if (!document.body) {
+        await new Promise((resolve) => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', resolve, { once: true });
+            } else {
+                resolve();
+            }
+        });
+    }
+
     settings = await loadSettings();
     applySettings();
 
@@ -228,6 +250,7 @@ export async function main() {
     document.addEventListener('touchmove', blockDirectReelScroll, { capture: true, passive: false });
     window.addEventListener('keydown', blockDirectReelKeys, true);
     document.addEventListener('scroll', snapBackDirectReel, true);
+    window.addEventListener('popstate', applySettings);
 
     observer.observe(document.body, {
         childList: true,
