@@ -196,9 +196,13 @@ function applySettings() {
         const reelPosts = new Set([...(body?.querySelectorAll(selectors.reelPostLink) ?? [])]
             .map((link) => link.closest(selectors.posts)));
         hide([...reelPosts], 'zenfeedReelHidden');
+        // the feed is virtualized and sizes its spacers with the hidden posts' old heights, so the
+        // browser's scroll anchoring keeps pulling the page back up whenever posts are swapped in
+        document.documentElement.style.overflowAnchor = 'none';
     } else {
         const reelPosts = document.querySelectorAll(`${selectors.posts}[data-zenfeed-reel-hidden="true"]`);
         show(reelPosts, 'zenfeedReelHidden');
+        document.documentElement.style.overflowAnchor = '';
     }
 
     pauseHiddenVideos();
